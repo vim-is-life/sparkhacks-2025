@@ -11,6 +11,15 @@ app.use(cors({
 
 app.get('/', (req, res) => {
     res.send('Backend is running!');
+}).post('/', async (req, res) => {
+    try {
+        await db.collection("users").doc("testdoc").set({
+            name: "any string"
+        });
+    } catch (err) {
+        res.send(err)
+    }
+    res.send("Firebase is running");
 })
 
 // routes (in order of importance):
