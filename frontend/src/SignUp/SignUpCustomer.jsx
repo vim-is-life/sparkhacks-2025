@@ -4,13 +4,17 @@ import BusinessCategorySelect from "../components/BusinessCategoryDropDown";
 import "./ocean-theme.css";
 import { auth } from "../firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import axios from "axios";
+import { Navigate } from "react-router-dom";
 
 function SignUpCustomerPage() {
     // State for sign-up form
+    const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [category, setCategory] = useState("");
+    const [redirect, setRedirect] = useState(false);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -20,8 +24,23 @@ function SignUpCustomerPage() {
         }
         const userCredentials = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredentials.user;
-        console.log("Form submitted", { email, password, category });
+
+        try {
+            await axios.post('/signup/user', {
+                name,
+                email,
+                categories_of_interest: category,
+            });
+            setRedirect(true);
+            console.log("Form submitted", { email, password, category });
+        } catch (err) {
+            console.log(err);
+        }
     };
+
+    if (redirect) {
+        return <Navigate to={'/home'} />
+    }
 
     return (
         <div className="min-h-screen flex items-center justify-center">
@@ -36,6 +55,17 @@ function SignUpCustomerPage() {
                 </CardHeader>
                 <CardBody>
                     <form onSubmit={handleSubmit} className="space-y-4">
+                        <div className="space-y-2">
+                            <Typography variant="small">Full Name</Typography>
+                            <Input 
+                                id="name" 
+                                type="text" 
+                                required 
+                                className="bg-white/50" 
+                                value={name} 
+                                onChange={(e) => setName(e.target.value)}
+                            />
+                        </div>
                         <div className="space-y-2">
                             <Typography variant="small">Email</Typography>
                             <Input 
@@ -71,7 +101,12 @@ function SignUpCustomerPage() {
                         </div>
                         <div className="space-y-2">
                             <Typography variant="small">Category</Typography>
-                            <BusinessCategorySelect onChange={setCategory} />
+                            <BusinessCategorySelect
+                                type = "text"
+                                required
+                                value = {category}
+                                onSelect={(category) => setCategory(category)}
+                            />
                         </div>
                         <Button type="submit" fullWidth color="blue">
                             Sign Up
