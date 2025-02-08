@@ -8,7 +8,7 @@ import {
   ListItemPrefix,
 } from "@material-tailwind/react";
 
-// 1. Import your AuthContext
+// 1 Import your AuthContext
 import { useAuth } from "../../components/AuthContext";
 
 function DrawerWithNav() {
