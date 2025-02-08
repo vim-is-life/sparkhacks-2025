@@ -12,9 +12,7 @@ function HomePage() {
     return (
         <>
 
-            onClick={() => {
-                console.log('Button clicked');
-            }}
+            
             <Link to={'/signup'}>
                 <Button>Button</Button>
             </Link>
