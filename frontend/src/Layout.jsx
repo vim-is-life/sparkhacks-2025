@@ -4,7 +4,7 @@ import Header from "./Header/Header";
 
 export default function Layout() {
     const location = useLocation();
-    const isLandingPage = location.pathname === "/"; // Adjust based on your route
+    const isLandingPage = location.pathname === "/"; 
 
     return (
         <div>
