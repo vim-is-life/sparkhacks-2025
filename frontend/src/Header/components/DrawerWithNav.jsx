@@ -80,7 +80,7 @@ function DrawerWithNav() {
           {/* Show Sign In/Sign Up ONLY IF NOT logged in */}
           {!currentUser && (
             <>
-              <Link to="/sign-in" onClick={closeDrawer}>
+              <Link to="/signin" onClick={closeDrawer}>
                 <ListItem>
                   <ListItemPrefix>
                     <svg
@@ -105,7 +105,7 @@ function DrawerWithNav() {
                 </ListItem>
               </Link>
 
-              <Link to="/sign-up" onClick={closeDrawer}>
+              <Link to="/signup" onClick={closeDrawer}>
                 <ListItem>
                   <ListItemPrefix>
                     <svg
