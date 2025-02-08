@@ -20,10 +20,7 @@ export default function App() {
     <Routes>
       <Route path='/' element={<Layout />}>
         <Route index element={<HomePage />} />
-      </Route>
-
-      <Route path='intro' element={<Layout />}>
-        <Route index element={<BusinessOrCustomerPage />} />
+        <Route path = '/intro' element = {< BusinessOrCustomerPage /> } />
       </Route>
     </Routes>
   )
