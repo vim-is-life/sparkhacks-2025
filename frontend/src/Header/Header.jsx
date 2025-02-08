@@ -5,7 +5,7 @@ import Profile from "./components/Profile";
 import { useAuth } from "../components/AuthContext";
 
 function Header() {
-  const { currentUser } = useAuth(); // Access the current user from AuthContext
+  const { currentUser } = useAuth();
 
   return (
     <>
