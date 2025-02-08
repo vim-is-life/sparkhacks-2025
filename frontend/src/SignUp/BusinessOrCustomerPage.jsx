@@ -1,14 +1,10 @@
 import { Link } from "react-router-dom";
 import { Card, CardBody, CardHeader, Typography, Button } from "@material-tailwind/react";
 import "./ocean-theme.css";
-import P5Sketch from '../components/P5Sketch';
 
 function BusinessOrCustomerPage() {
   return (
     <>
-      {
-        <P5Sketch />
-      }
       <div className="w-full min-h-screen flex items-center justify-center overflow-hidden no-scrollbar border-red-900">
         <div className="max-w-full w-full px-4 z-10">
           <Typography variant="h1" className="text-4xl font-bold text-center mb-8 text-white">
