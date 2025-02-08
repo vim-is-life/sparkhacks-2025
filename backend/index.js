@@ -30,23 +30,41 @@ app.get('/', (req, res) => {
 //     /signup/business
 //     use firebase createUserWithEmailAndPassword func to handle the user's pass
 app.post('/signup/business', async (req, res) => {
-    const { name, email, businessCategory, description, latitude, longitude, pictureUrls } = req.body;
+    // reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURI
+    // since this is for hackathon, wont handle api issues
+    const { name, email, businessCategory, description, address, pictureUrls } = req.body;
+    const url = encodeURI(`https://geocode.maps.co/search?q=${address}&api_key=${geocodingApiKey}`);
+    const apiResponse = await fetch(url);
+
+    // these are default values. i don't expect api call to fail for this hackathon
+    let lat = -1;
+    let lon = -1;
+    if (apiResponse.ok) {
+        const data = await apiResponse.json();
+        apiJson = data[0]
+        lat = apiJson.lat;
+        lon = apiJson.lon;
+    }
+
     // leave doc empty so firebase makes a uuid for business
     try {
-        console.log(`New biz acc!  -> ${name} in ${businessCategory} is added`);
         await db.collection("businesses").doc().set({
             name: name,
             email: email,
             businessCategory: businessCategory,
             description: description,
-            latitude: latitude,
-            longitude: longitude,
+            address: address,
+            latitude: lat,
+            longitude: lon,
             pictureUrls: pictureUrls,
         });
     } catch (err) {
-        console.log('there was an error. i died. no puedo agregar a firebase');
-        res.status(500).send(err);
+        console.log(err);
+        return res.status(500).send(err);
     }
+
+    console.log(`New biz acc!  -> ${name} in ${businessCategory} is added`);
+    console.log(`lat: ${lat}\nlon: ${lon}`);
     res.status(200).send();
 })
 
@@ -64,6 +82,7 @@ app.post('/signup/user', async (req, res) => {
             categories_of_interest: categories_of_interest,
         });
     } catch (err) {
+        console.log(err);
         res.status(500).send(err);
     }
     res.status(200).send();
