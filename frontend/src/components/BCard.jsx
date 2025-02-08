@@ -1,25 +1,38 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 
-function BCard() {
+const BCard = ({ title, srclink, description, buttonText }) => {
+    const titleRef = useRef(null);
 
-    const srclink = "https://images.axios.com/z_2A95PhQxEOOLJFf10q0JjuDlI=/0x284:1925x1367/1920x1080/2023/05/10/1683744693451.jpg";
+    useEffect(() => {
+        const titleElement = titleRef.current;
+        if (titleElement) {
+            const textLength = titleElement.textContent.length;
+            const fontSize = Math.max(16, 32 - textLength * 0.5); // Adjust formula as needed
+            titleElement.style.fontSize = `${fontSize}px`;
+        }
+    }, [title]);
+
     return (
         <div className="card bg-base-100 w-96 shadow-xl">
-        <figure className="px-10 pt-10">
-            <img
-            src={srclink}
-            alt="Shoes"
-            className="rounded-xl" />
-        </figure>
-        <div className="card-body items-center text-center">
-            <h2 className="card-title">Shoes!</h2>
-            <p>If a dog chews shoes whose shoes does he choose?</p>
-            <div className="card-actions">
-            <button className="btn btn-primary">Buy Now</button>
+            <div className="card-body items-center text-center">
+                <h1 ref={titleRef} className="whitespace-nowrap overflow-hidden text-ellipsis w-full">
+                    {title}
+                </h1>
+                <figure className="px-0 pt-5">
+                    <img
+                        src={srclink}
+                        alt="Card image"
+                        className="rounded-xl"
+                    />
+                </figure>
+                <p>{description}</p>
+                <div className="card-actions">
+                    <button className="btn btn-primary">{buttonText}</button>
+                </div>
             </div>
         </div>
-        </div>
     );
-}
+};
 
 export default BCard;
+

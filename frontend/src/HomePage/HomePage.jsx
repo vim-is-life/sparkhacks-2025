@@ -17,10 +17,18 @@ function HomePage() {
             </Link>
             <div className='container'>
                 <div className="map">
-                    <MyMapComponent  />
+                    <MyMapComponent />
                 </div>
+                <div>
+                    <BCard
+                        title = "HOLDER" 
+                        srclink = 'https://media.istockphoto.com/id/141914198/photo/young-labrador-retriever-4-months-old.jpg?s=612x612&w=0&k=20&c=w3I20o2KkK9cKzdY69nqbj_HNSJFGp28KgK9Gp11UME='
+                        description = "DOGDOGDOGDOGDOGDOGDOGDOGDOGDOGDOGDOGDOG"
+                        buttonText = "SOCIAL MEDIA"
+                    />
+                </div>
+                    
                 
-                <BCard/>
             </div>
         </>
         
