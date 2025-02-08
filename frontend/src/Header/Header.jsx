@@ -82,7 +82,7 @@ function Header() {
                     to="/signup"
                     title="Sign Up"
                     className="px-5 py-2 text-base font-light font-poppins text-black 
-                              bg-customGreen rounded-xl hover:bg-green-300 focus:outline-none 
+                              bg-customGreen bg-transparent border border-gray-900 rounded-xl hover:bg-green-300 focus:outline-none 
                               focus:ring-2 focus:ring-offset-2 focus:ring-green-600"
                   >
                     Sign Up
