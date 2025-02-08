@@ -3,6 +3,7 @@ import { DrawerWithNavigation } from "../components/DrawerWithNavigation";
 import '../index.css'
 import { Link } from "react-router-dom";
 import MyMapComponent from "../components/Map";
+import BCard from "../components/BCard";
 
 
 
@@ -12,9 +13,6 @@ function HomePage() {
 
             <DrawerWithNavigation />
 
-            <h1 className="text-3xl font-bold underline">
-                Hello world!
-            </h1>
             <Link to={'/signup'}>
                 <Button>Button</Button>
             </Link>
@@ -23,9 +21,7 @@ function HomePage() {
                     <MyMapComponent  />
                 </div>
                 
-                <div className='bg-white side-view'>
-                    {/* <BCard/> */}
-                </div>
+                <BCard/>
             </div>
         </>
         

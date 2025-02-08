@@ -45,7 +45,7 @@ function MyMapComponent() {
         <MapContainer
             center={[userLocation.lat, userLocation.lng]}
             zoom={locationFound ? 13 : 10} // Adjust zoom based on whether location was found
-            style={{ height: '80vh', width: '100%' }}
+            style={{ height: '80vh', width: '100%', borderRadius: '10px' }}
         >
             <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
