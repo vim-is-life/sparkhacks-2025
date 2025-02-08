@@ -12,8 +12,8 @@ app.use(cors({
 }));
 
 
-// return the distance between two points on the earth where point 1 is
-// represented by `lat1` and `lon1` and point 2 by `lat2` and `lon2`.
+// return the distance (in meters) between two points on the earth where point 1
+// is represented by `lat1` and `lon1` and point 2 by `lat2` and `lon2`.
 // - reference: https://www.movable-type.co.uk/scripts/latlong.html
 function calculateDistBetweenTwoPoints(lat1, lon1, lat2, lon2) {
     const R = 6371e3; // metres
@@ -131,39 +131,30 @@ app.post('/signup/user', async (req, res) => {
 // - view all businesses, send relevant ones
 //     GET{lat, lon} businesses/
 app.get('/businesses', async (req, res) => {
+    const MAX_DISTANCE_MILES = 5;
+    const MAX_DISTANCE_METERS = MAX_DISTANCE_MILES * 1609.34;
+
     // take user's lat and long to get things that are in the same zip code
     const userLat = parseFloat(req.query.lat);
     const userLon = parseFloat(req.query.lon);
-    const url = encodeURI(`https://geocode.maps.co/reverse?lat=${userLat}&lon=${userLon}&api_key=${geocodingApiKey}`);
-    let userZip;
-    const apiResponse = await fetch(url);
-
-    if (!apiResponse.ok) {
-        console.log("[ERR] couldnt do reverse lookup with the geocoding api");
-        userZip = 60607;  // hack, change if have time
-    } else {
-        const apiJson = await apiResponse.json();
-        console.log(apiJson);
-        userZip = parseInt(apiJson.postcode, 10);
-    }
 
     let businesses = [];
     try {
-        businesses = await db.collection("businesses").whereEqualTo("zipCode", userZip).get();
+        businesses = await db.collection("businesses").get();
     } catch (err) {
         console.log(err);
         return res.status(500).send();
     }
 
-    // sort businesses
+    // sort businesses and drop those that are too far
     console.log(businesses);
-    businesses.sort((a, b) => {
-        const distanceA = calculateDistBetweenTwoPoints(userLat, userLon, a.latitude, a.longitude);
-        const distanceB = calculateDistBetweenTwoPoints(userLat, userLon, b.latitude, b.longitude);
-        return distanceA - distanceB;
+    businesses.forEach((business) => {
+        business.distance = calculateDistBetweenTwoPoints(userLat, userLon, business.latitude, business.longitude);
     });
 
-    // sort businesses array
+    businesses.filter((b) => {b.distance <= MAX_DISTANCE_METERS})
+              .sort((a, b) => a.distance - b.distance);
+
     res.status(200).send(businesses);
 })
 
