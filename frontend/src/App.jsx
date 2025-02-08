@@ -3,6 +3,8 @@ import { Routes, Route } from 'react-router-dom';
 
 // axios for api requests
 import axios from 'axios';
+import '@fortawesome/fontawesome-free/css/all.min.css';
+import './index.css'
 
 // Imported Pages
 import HomePage from "./HomePage/HomePage";
