@@ -51,6 +51,7 @@ app.post('/signup/business', async (req, res) => {
     let lon = -1;
     if (apiResponse.ok) {
         const data = await apiResponse.json();
+        console.log("This is the data: ", data);
         apiJson = data[0]
         lat = apiJson.lat;
         lon = apiJson.lon;
@@ -60,6 +61,7 @@ app.post('/signup/business', async (req, res) => {
     // NOTE: we must receive the address in this format, because we dont have
     // logic to work around errors
     const { street, city, state, zip } = address.split(",");
+    console.log(`this is what is being retrieved: ${street}, ${city}, ${state}, ${zip}`);
 
     // leave doc empty so firebase makes a uuid for business
     try {
