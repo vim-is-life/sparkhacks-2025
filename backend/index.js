@@ -29,9 +29,9 @@ app.get('/', (req, res) => {
 //     use firebase createUserWithEmailAndPassword func to handle the user's pass
 app.post('/signup/business', async (req, res) => {
     const { name, email, businessCategory, description, latitude, longitude, pictureUrls } = req.body;
-    console.log(`New biz acc!  -> ${name} in ${businessCategory} is added`);
     // leave doc empty so firebase makes a uuid for business
     try {
+        console.log(`New biz acc!  -> ${name} in ${businessCategory} is added`);
         await db.collection("businesses").doc().set({
             name: name,
             email: email,
@@ -43,7 +43,7 @@ app.post('/signup/business', async (req, res) => {
         });
     } catch (err) {
         console.log('there was an error. i died. no puedo agregar a firebase');
-        res.status(500).send();
+        res.status(500).send(err);
     }
     res.status(200).send();
 })
@@ -52,9 +52,18 @@ app.post('/signup/business', async (req, res) => {
 //     POST{name, email, categories_of_interest}
 //     /signup/user
 //     use firebase createUserWithEmailAndPassword func to handle the user's pass
-app.post('/signup/user', (req, res) => {
+app.post('/signup/user', async (req, res) => {
     const {name, email, categories_of_interest } = req.body;
-    console.log(`New user acc! -> ${name} who likes ${categories_of_interest}`);
+    try {
+        console.log(`New user acc! -> ${name} who likes ${categories_of_interest}`);
+        await db.collection("users").doc().set({
+            name: name,
+            email: email,
+            categories_of_interest: categories_of_interest,
+        });
+    } catch (err) {
+        res.status(500).send(err);
+    }
     res.status(200).send();
 })
 

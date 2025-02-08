@@ -11,7 +11,6 @@ function HomePage() {
     return (
         <>
 
-            <DrawerWithNavigation />
 
             <Link to={'/signup'}>
                 <Button>Button</Button>
