@@ -11,18 +11,6 @@ app.use(cors({
     credentials: true,
 }));
 
-app.get('/', (req, res) => {
-    res.send('Backend is running!');
-}).post('/', async (req, res) => {
-    try {
-        await db.collection("users").doc("testdoc").set({
-            name: "any string"
-        });
-    } catch (err) {
-        res.send(err)
-    }
-    res.send("Firebase is running");
-})
 
 // routes (in order of importance):
 // - business registration
@@ -88,11 +76,6 @@ app.post('/signup/user', async (req, res) => {
     res.status(200).send();
 })
 
-// - user/business login
-//     POST{email,name} /login
-app.post('/login', (req, res) => {
-    // TODO(implement)
-})
 
 // - view all businesses, send relevant ones
 //     GET{lat, lon} businesses/
