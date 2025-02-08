@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { Card, CardHeader, CardBody, CardFooter, Typography, Button, Input } from "@material-tailwind/react";
 import { ArrowLeftIcon, XMarkIcon, PhotoIcon } from "@heroicons/react/24/solid";
 import { auth, storage } from "../firebase"; // Import Firebase services
-import { ref, uploadBytes } from "firebase/storage";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import axios from "axios";
 import "./ocean-theme.css";
 
 function BusinessPhotoUploadPage() {
@@ -38,12 +39,19 @@ function BusinessPhotoUploadPage() {
       const userId = user.uid; // Use the user's UID as the unique identifier
 
       // Upload photos to Firebase Storage
-      await Promise.all(
+      const photoUrls = await Promise.all(
         photos.map(async (photo) => {
-          const storageRef = ref(storage, `businessPhotos/${userId}/${photo.name}`);
-          await uploadBytes(storageRef, photo.file); // Upload the file
+            const storageRef = ref(storage, `businessPhotos/${userId}/${photo.name}`);
+            await uploadBytes(storageRef, photo.file); // Upload the file
+            const downloadURL = await getDownloadURL(storageRef); // Get the download URL
+            return downloadURL;
         })
       );
+
+      await axios.post('/signup/business/addphotos', {
+        userId: userId, // Send the user ID
+        pictureUrls: photoUrls, // Send the list of photo URLs
+      });
 
       console.log("Photos uploaded successfully!");
       navigate("/"); // Navigate to the dashboard

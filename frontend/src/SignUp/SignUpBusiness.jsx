@@ -4,6 +4,7 @@ import { Card, CardBody, CardHeader, CardFooter, Typography, Button, Input } fro
 import BusinessCategorySelect from "../components/BusinessCategoryDropDown";
 import { auth } from "../firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import axios from "axios";
 import "./ocean-theme.css";
 
 function SignUpBusinessPage() {
@@ -41,6 +42,21 @@ function SignUpBusinessPage() {
             console.log("Form submitted");
             const userCredentials = await createUserWithEmailAndPassword(auth, businessEmail, businessPassword);
             const user = userCredentials.user;
+            const userId = auth.currentUser.uid;
+
+            try {
+                await axios.post('/signup/business', {
+                    userId: userId,
+                    name: businessName,
+                    email: businessEmail,
+                    businessCategory: businessCategory,
+                    description: businessDescription,
+                    address: businessAddress,
+                });
+                console.log("Form submitted", { businessName, businessEmail, businessCategory, businessDescription, businessAddress });
+            } catch (err) {
+                console.log(err);
+            }
 
             console.log({
                 businessName,
