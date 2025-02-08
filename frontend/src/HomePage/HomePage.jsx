@@ -4,6 +4,7 @@ import '../index.css'
 import { Link } from "react-router-dom";
 import MyMapComponent from "../components/Map";
 import BCard from "../components/BCard";
+import { useEffect, useState } from 'react';
 
 
 
@@ -11,7 +12,9 @@ function HomePage() {
     return (
         <>
 
-
+            onClick={() => {
+                console.log('Button clicked');
+            }}
             <Link to={'/signup'}>
                 <Button>Button</Button>
             </Link>
@@ -23,7 +26,7 @@ function HomePage() {
                     <BCard
                         title = "HOLDER" 
                         srclink = 'https://media.istockphoto.com/id/141914198/photo/young-labrador-retriever-4-months-old.jpg?s=612x612&w=0&k=20&c=w3I20o2KkK9cKzdY69nqbj_HNSJFGp28KgK9Gp11UME='
-                        description = "DOGDOGDOGDOGDOGDOGDOGDOGDOGDOGDOGDOGDOG"
+                        description = "this is a description of the card"
                         buttonText = "SOCIAL MEDIA"
                     />
                 </div>

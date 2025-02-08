@@ -25,7 +25,7 @@ const BCard = ({ title, srclink, description, buttonText }) => {
                         className="rounded-xl"
                     />
                 </figure>
-                <p>{description}</p>
+                <p className="text-wrap">{description}</p>
                 <div className="card-actions">
                     <button className="btn btn-primary">{buttonText}</button>
                 </div>
