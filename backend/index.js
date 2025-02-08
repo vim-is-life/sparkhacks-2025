@@ -4,25 +4,33 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 const geocodingApiKey = "67a7b07bd7c04782315820cwze3a649";
-app.use(express.json());
 
+app.use(express.json());
 app.use(cors({
     origin: 'http://localhost:5173',
     credentials: true,
 }));
 
-app.get('/', (req, res) => {
-    res.send('Backend is running!');
-}).post('/', async (req, res) => {
-    try {
-        await db.collection("users").doc("testdoc").set({
-            name: "any string"
-        });
-    } catch (err) {
-        res.send(err)
-    }
-    res.send("Firebase is running");
-})
+
+// return the distance between two points on the earth where point 1 is
+// represented by `lat1` and `lon1` and point 2 by `lat2` and `lon2`.
+// - reference: https://www.movable-type.co.uk/scripts/latlong.html
+function calculateDistBetweenTwoPoints(lat1, lon1, lat2, lon2) {
+    const R = 6371e3; // metres
+    const φ1 = lat1 * Math.PI / 180; // φ, λ in radians
+    const φ2 = lat2 * Math.PI / 180;
+    const Δφ = (lat2 - lat1) * Math.PI / 180;
+    const Δλ = (lon2 - lon1) * Math.PI / 180;
+
+    const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+        Math.cos(φ1) * Math.cos(φ2) *
+        Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+    const d = R * c; // in metres
+
+    return d
+}
 
 // routes (in order of importance):
 // - business registration
@@ -73,7 +81,7 @@ app.post('/signup/business', async (req, res) => {
 //     /signup/user
 //     use firebase createUserWithEmailAndPassword func to handle the user's pass
 app.post('/signup/user', async (req, res) => {
-    const {name, email, categories_of_interest } = req.body;
+    const { name, email, categories_of_interest } = req.body;
     try {
         console.log(`New user acc! -> ${name} who likes ${categories_of_interest}`);
         await db.collection("users").doc().set({
@@ -86,12 +94,6 @@ app.post('/signup/user', async (req, res) => {
         res.status(500).send(err);
     }
     res.status(200).send();
-})
-
-// - user/business login
-//     POST{email,name} /login
-app.post('/login', (req, res) => {
-    // TODO(implement)
 })
 
 // - view all businesses, send relevant ones
