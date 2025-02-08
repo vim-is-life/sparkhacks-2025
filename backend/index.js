@@ -8,18 +8,19 @@ app.use(cors({
     credentials: true,
 }));
 
-
 app.get('/', (req, res) => {
     res.send('Backend is running!');
 })
 
 // routes (in order of importance):
 // - business registration
-//     POST{name, email, category, desc, addr, profile picture(s)}
+//     POST{name, email, category, desc, latitude, longitude, profile picture(s)}
 //     /signup/business
 //     use firebase createUserWithEmailAndPassword func to handle the user's pass
 app.post('/signup/business', (req, res) => {
-    // TODO(implelment)
+    const { name, email, businessCategory, description, address, pictureUrls } = req.body;
+    console.log(`${name} has just registered. category  is ${businessCategory}`);
+    res.status(200).send();
 })
 
 // - user resgistration
@@ -49,9 +50,7 @@ app.post('/businesses', (req, res) => {
 // - business profile page
 
 
-
-
-// listing port
+// listening port
 const port = process.env.PORT || 4000;
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
