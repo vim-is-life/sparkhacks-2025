@@ -1,7 +1,5 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import Logo from "../../Logo/Akknoledge-Logo.png";
-import TideLogo from "../../Logo/Logo.png";
 import {
   Drawer,
   IconButton,
@@ -31,7 +29,7 @@ function DrawerWithNav() {
       </button>
       <Drawer open={open} onClose={closeDrawer}>
         <div className="mb-2 flex items-center justify-between p-4">
-          <img src={TideLogo} alt="Akknoledge Logo" className="w-48" />
+          <img src={'https://firebasestorage.googleapis.com/v0/b/sparkhacks-2025-6f939.firebasestorage.app/o/TideTogetherLogo.png?alt=media&token=2106e130-ae3f-4437-bdb7-195f746e3a64'} alt="TideTogether Logo" className="w-48" />
           <IconButton variant="text" color="blue-gray" onClick={closeDrawer}>
             <svg
               xmlns="http://www.w3.org/2000/svg"

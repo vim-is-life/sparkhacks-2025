@@ -1,5 +1,4 @@
 import DrawerWithNav from "./components/DrawerWithNav";
-import Logo from "../Logo/Akknoledge-Logo.png";
 import { Link } from "react-router-dom";
 import Profile from "./components/Profile";
 import { useAuth } from "../components/AuthContext";
@@ -23,8 +22,8 @@ function Header() {
               <Link to="/" title="Akknoledge" className="flex rounded">
                 <img
                   className="w-auto h-11"
-                  src={Logo}
-                  alt="Akknoledge Logo"
+                  src={'https://firebasestorage.googleapis.com/v0/b/sparkhacks-2025-6f939.firebasestorage.app/o/TideTogetherLogo.png?alt=media&token=2106e130-ae3f-4437-bdb7-195f746e3a64'}
+                  alt="TideTogether Logo"
                 />
               </Link>
             </div>
@@ -55,8 +54,8 @@ function Header() {
               <Link to="/" title="Akknoledge" className="flex rounded">
                 <img
                   className="w-auto h-11"
-                  src={Logo}
-                  alt="Akknoledge Logo"
+                  src={'https://firebasestorage.googleapis.com/v0/b/sparkhacks-2025-6f939.firebasestorage.app/o/TideTogetherLogo.png?alt=media&token=2106e130-ae3f-4437-bdb7-195f746e3a64'}
+                  alt="TideTogether Logo"
                 />
               </Link>
             </div>
