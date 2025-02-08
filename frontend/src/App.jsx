@@ -15,6 +15,7 @@ import SignUpBusiness from './SignUp/SignUpBusiness';;
 import SignUpCustomer from './SignUp/SignUpCustomer';
 import SignInPage from './SignUp/SignIn';
 import LandingPage from './LandingPage/LandingPage';
+import BusinessPhotoUploadPage from './SignUp/BusinessAddPhotos';
 
 // Connects Frontend to Backend
 axios.defaults.baseURL = 'http://localhost:4000';
@@ -31,6 +32,7 @@ export default function App() {
           <Route path='/home' element = {<HomePage /> } />
           <Route path='/signup' element = {< BusinessOrCustomerPage /> } />
           <Route path='/signup/business' element = {<SignUpBusiness /> } />
+          <Route path='/signup/business/addphotos' element = {<BusinessPhotoUploadPage/>} />
           <Route path='/signup/customer' element = {<SignUpCustomer /> } />
           <Route path='/signin' element = {<SignInPage /> } />
         </Route>

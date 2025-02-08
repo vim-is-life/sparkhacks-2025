@@ -40,7 +40,8 @@ function calculateDistBetweenTwoPoints(lat1, lon1, lat2, lon2) {
 app.post('/signup/business', async (req, res) => {
     // reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURI
     // since this is for hackathon, wont handle api issues
-    const { name, email, businessCategory, description, address, pictureUrls } = req.body;
+    const { userId, name, email, businessCategory, description, address } = req.body;
+
     const url = encodeURI(`https://geocode.maps.co/search?q=${address}&api_key=${geocodingApiKey}`);
     const apiResponse = await fetch(url);
 
@@ -49,6 +50,7 @@ app.post('/signup/business', async (req, res) => {
     let lon = -1;
     if (apiResponse.ok) {
         const data = await apiResponse.json();
+        console.log("This is the data: ", data);
         apiJson = data[0]
         lat = apiJson.lat;
         lon = apiJson.lon;
@@ -57,22 +59,17 @@ app.post('/signup/business', async (req, res) => {
     // parse address to street, city, state, and zip
     // NOTE: we must receive the address in this format, because we dont have
     // logic to work around errors
-    const { street, city, state, zip } = address.split(",");
 
     // leave doc empty so firebase makes a uuid for business
     try {
-        await db.collection("businesses").doc().set({
+        await db.collection("businesses").doc(userId).set({
             name: name,
             email: email,
             businessCategory: businessCategory,
             description: description,
-            streetAddress: street,
-            city: city,
-            state: state,
-            zipCode: parseInt(zip, 10),
+            address: address,
             latitude: lat,
             longitude: lon,
-            pictureUrls: pictureUrls,
         });
     } catch (err) {
         console.log(err);
@@ -81,6 +78,31 @@ app.post('/signup/business', async (req, res) => {
 
     console.log(`New biz acc!  -> ${name} in ${businessCategory} is added`);
     console.log(`lat: ${lat}\nlon: ${lon}`);
+    res.status(200).send();
+})
+
+// - business registration, adding the photos to the field
+app.post('/signup/business/addphotos', async (req, res) => {
+    // reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURI
+    // since this is for hackathon, wont handle api issues
+    const { userId, pictureUrls } = req.body;
+
+    if (!userId || !pictureUrls) {
+        return res.status(400).send("userId and pictureUrls are required");
+    }
+
+    // leave doc empty so firebase makes a uuid for business
+    try {
+        await db.collection("businesses").doc(userId).set(
+            { pictureUrls: pictureUrls },
+            { merge: true }
+        );
+    } catch (err) {
+        console.log(err);
+        return res.status(500).send(err);
+    }
+
+    console.log(`added photos for ${userId}`);
     res.status(200).send();
 })
 

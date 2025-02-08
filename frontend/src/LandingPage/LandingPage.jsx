@@ -1,6 +1,8 @@
 import { Search, Globe, TrendingUp, Users, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../components/AuthContext";
+import { Typography, Button, } from "@material-tailwind/react";
+import CarouselCustomNav from "../components/CarouselCustomNav";
 
 export default function TideTogetherLanding() {
   const { currentUser } = useAuth();
