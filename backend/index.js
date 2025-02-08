@@ -40,7 +40,6 @@ function calculateDistBetweenTwoPoints(lat1, lon1, lat2, lon2) {
 app.post('/signup/business', async (req, res) => {
     // reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURI
     // since this is for hackathon, wont handle api issues
-    // const { name, email, businessCategory, description, address, pictureUrls } = req.body;
     const { userId, name, email, businessCategory, description, address } = req.body;
 
     const url = encodeURI(`https://geocode.maps.co/search?q=${address}&api_key=${geocodingApiKey}`);
@@ -60,30 +59,15 @@ app.post('/signup/business', async (req, res) => {
     // parse address to street, city, state, and zip
     // NOTE: we must receive the address in this format, because we dont have
     // logic to work around errors
-    const { street, city, state, zip } = address.split(",");
-    console.log(`this is what is being retrieved: ${street}, ${city}, ${state}, ${zip}`);
 
     // leave doc empty so firebase makes a uuid for business
     try {
-        // await db.collection("businesses").doc().set({
-        //     name: name,
-        //     email: email,
-        //     businessCategory: businessCategory,
-        //     description: description,
-        //     address: address,
-        //     latitude: lat,
-        //     longitude: lon,
-        //     pictureUrls: pictureUrls,
-        // });
         await db.collection("businesses").doc(userId).set({
             name: name,
             email: email,
             businessCategory: businessCategory,
             description: description,
-            streetAddress: street,
-            city: city,
-            state: state,
-            zipCode: parseInt(zip, 10),
+            address: address,
             latitude: lat,
             longitude: lon,
         });
