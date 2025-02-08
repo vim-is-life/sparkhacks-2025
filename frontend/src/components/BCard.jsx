@@ -1,4 +1,12 @@
 import React, { useRef, useEffect } from 'react';
+import CarouselCustomNav from './CarouselCustomNav';
+
+
+const carouselImages = [
+    "https://images.unsplash.com/photo-1497436072909-60f360e1d4b1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2560&q=80",
+    "https://images.unsplash.com/photo-1493246507139-91e8fad9978e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2940&q=80",
+    "https://images.unsplash.com/photo-1518623489648-a173ef7824f3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2762&q=80",
+];
 
 const BCard = ({ title, srclink, description, buttonText }) => {
     const titleRef = useRef(null);
@@ -19,11 +27,12 @@ const BCard = ({ title, srclink, description, buttonText }) => {
                     {title}
                 </h1>
                 <figure className="px-0 pt-5">
-                    <img
+                    {/* <img
                         src={srclink}
                         alt="Card image"
                         className="rounded-xl"
-                    />
+                    /> */}
+                    <CarouselCustomNav images={carouselImages} />
                 </figure>
                 <p className="text-wrap">{description}</p>
                 <div className="card-actions">

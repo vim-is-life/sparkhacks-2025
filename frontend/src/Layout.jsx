@@ -10,7 +10,7 @@ export default function Layout() {
         <div>
             <P5Sketch />
             <Header />
-            <div className={isLandingPage ? "min-h-screen" : "py-4 px-8 flex flex-col min-h-screen"}>
+            <div className={isLandingPage ? "min-h-screen" : "py-4 px-8 flex flex-col"}>
                 <Outlet />
             </div>
         </div>
