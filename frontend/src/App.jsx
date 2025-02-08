@@ -1,5 +1,6 @@
 // Import Packages
 import { Routes, Route } from 'react-router-dom';
+import { AuthProvider } from './components/AuthContext';
 
 // axios for api requests
 import axios from 'axios';
@@ -18,16 +19,20 @@ axios.defaults.withCredentials = true;
 
 
 
+
+
 export default function App() {
   return (   
-    <Routes>
-      <Route path='/' element={<Layout />}>
-        <Route index element={<HomePage />} />
-        <Route path='/signup' element = {< BusinessOrCustomerPage /> } />
-        <Route path='/signup/business' element = {<SignUpBusiness /> } />
-        <Route path='/signup/customer' element = {<SignUpCustomer /> } />
-        <Route path='/signin' element = {<SignInPage /> } />
-      </Route>
-    </Routes>
+    <AuthProvider>
+      <Routes>
+        <Route path='/' element={<Layout />}>
+          <Route index element = {<HomePage />} />
+          <Route path='/signup' element = {< BusinessOrCustomerPage /> } />
+          <Route path='/signup/business' element = {<SignUpBusiness /> } />
+          <Route path='/signup/customer' element = {<SignUpCustomer /> } />
+          <Route path='/signin' element = {<SignInPage /> } />
+        </Route>
+      </Routes>
+    </AuthProvider>  
   )
 }
