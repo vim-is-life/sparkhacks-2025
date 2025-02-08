@@ -2,12 +2,14 @@ Welcome to TideTogether!
 
 # INSTRUCTIONS TO RUN
 1. Clone repository onto your system
-2. change directory to `~/frontend`
+2. change directory to `sparkhacks-2025/frontend`
 3. run `npm i` to install dependencies
 4. run `npm install @material-tailwind/react @heroicons/react`
 5. change directory to `../backend`
 6. run `npm i` to install dependencies
-7. After having installed the dependencies you can now host it locally using `npm run dev`
+7. After having installed the dependencies you can now host it locally by running
+   - `npm run dev` in a terminal window in the `sparkhacks-2025/frontend` directory
+   - `npx nodemon index` in a terminal window in the `sparkhacks-2025/backend` directory
 
 # DESCRIPTION:
 
