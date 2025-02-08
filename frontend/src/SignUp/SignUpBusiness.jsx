@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Card, CardBody, CardHeader, CardFooter, Typography, Button, Input } from "@material-tailwind/react";
 import BusinessCategorySelect from "../components/BusinessCategoryDropDown";
+import { auth } from "../firebase";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import "./ocean-theme.css";
 
 function SignUpBusinessPage() {
@@ -14,19 +16,43 @@ function SignUpBusinessPage() {
     const [businessPassword, setBusinessPassword] = useState("");
 
     const [isSignUp, setIsSignUp] = useState(true);
+    const [isError, setIsError] = useState(false);
+    const [passwordError, setPasswordError] = useState(false);
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        console.log("Form submitted");
-        console.log({
-            businessName,
-            businessEmail,
-            businessCategory,
-            businessDescription,
-            businessAddress,
-            businessPassword,
-        });
+        if (businessCategory === "") {
+            setIsError(true); 
+            return;
+        }
+
+        if (businessPassword.length < 6) {
+            setPasswordError(true);
+            return;
+        }
+
+        setIsError(false); 
+        setPasswordError(false);
+
+        try {
+            console.log("Form submitted");
+            const userCredentials = await createUserWithEmailAndPassword(auth, businessEmail, businessPassword);
+            const user = userCredentials.user;
+
+            console.log({
+                businessName,
+                businessEmail,
+                businessCategory,
+                businessDescription,
+                businessAddress,
+                businessPassword,
+            });
+        } catch (error) {
+            console.error("Error creating user:", error);
+        }
     };
+
+
 
     return (
         <div className="min-h-screen flex items-center justify-center overflow-hidden">
@@ -73,6 +99,11 @@ function SignUpBusinessPage() {
                             value = {businessCategory}
                             onSelect={(category) => setBusinessCategory(category)}
                         />
+                         {isError && (
+                            <Typography variant="small" color="red">
+                                Please select a category.
+                            </Typography>
+                        )}
                     </div>
                     <div className="space-y-2">
                         <Typography variant="small">Description</Typography>
@@ -107,12 +138,18 @@ function SignUpBusinessPage() {
                             required 
                             className="bg-white/50" 
                         />
+                         {passwordError && (
+                            <Typography variant="small" color="red">
+                                Please have your password 6 characters or more
+                            </Typography>
+                        )}
                     </div>
                     <Button type="submit" fullWidth color="blue">
                         {isSignUp ? "Set Sail" : "Board Your Ship"}
                     </Button>
                 </form>
                 </CardBody>
+
                 <CardFooter className="flex justify-center">
                     <Button variant="text" color="blue" onClick={() => setIsSignUp(!isSignUp)}>
                         {isSignUp ? "Already have a ship? Board now" : "Need a new vessel? Register here"}
