@@ -151,9 +151,9 @@ function SignUpBusinessPage() {
                 </CardBody>
 
                 <CardFooter className="flex justify-center">
-                    <Button variant="text" color="blue" onClick={() => setIsSignUp(!isSignUp)}>
-                        {isSignUp ? "Already have a ship? Board now" : "Need a new vessel? Register here"}
-                    </Button>
+                    <Typography variant="small">
+                        Already have an account? <a href="/signin" className="text-blue-600">Log in</a>
+                    </Typography>
                 </CardFooter>
             </Card>
         </div>
