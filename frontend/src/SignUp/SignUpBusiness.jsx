@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate} from "react-router-dom";
 import { Card, CardBody, CardHeader, CardFooter, Typography, Button, Input } from "@material-tailwind/react";
 import BusinessCategorySelect from "../components/BusinessCategoryDropDown";
 import { auth } from "../firebase";
@@ -19,7 +19,10 @@ function SignUpBusinessPage() {
     const [isError, setIsError] = useState(false);
     const [passwordError, setPasswordError] = useState(false);
 
+    const navigate = useNavigate();
+
     const handleSubmit = async (event) => {
+
         event.preventDefault();
         if (businessCategory === "") {
             setIsError(true); 
@@ -47,6 +50,9 @@ function SignUpBusinessPage() {
                 businessAddress,
                 businessPassword,
             });
+
+            navigate("/signup/business/addphotos");
+            
         } catch (error) {
             console.error("Error creating user:", error);
         }
@@ -144,7 +150,7 @@ function SignUpBusinessPage() {
                             </Typography>
                         )}
                     </div>
-                    <Button type="submit" fullWidth color="blue">
+                    <Button type="submit" fullWidth color="blue" onChange = {handleSubmit}>
                         {isSignUp ? "Set Sail" : "Board Your Ship"}
                     </Button>
                 </form>

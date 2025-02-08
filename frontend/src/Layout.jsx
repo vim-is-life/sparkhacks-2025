@@ -1,17 +1,18 @@
-import { Outlet } from "react-router-dom";
-import P5Sketch from './components/P5Sketch'
-import { DrawerWithNavigation } from "./components/DrawerWithNavigation";
-import Header from "./components/Header";
+import { Outlet, useLocation } from "react-router-dom";
+import P5Sketch from "./components/P5Sketch";
+import Header from "./Header/Header";
 
 export default function Layout() {
+    const location = useLocation();
+    const isLandingPage = location.pathname === "/"; 
+
     return (
         <div>
             <P5Sketch />
-            
-            <div className="flex flex-col min-h-screen">
-                <Header/>
+            <Header />
+            <div className={isLandingPage ? "min-h-screen" : "py-4 px-8 flex flex-col min-h-screen"}>
                 <Outlet />
             </div>
         </div>
-    )
+    );
 }
