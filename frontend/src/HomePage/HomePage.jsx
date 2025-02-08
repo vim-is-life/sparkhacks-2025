@@ -20,7 +20,7 @@ function HomePage() {
                 </div>
                 
                 <div className='bg-white side-view'>
-                    <h3>Some Text</h3>
+                    {/* <BCard/> */}
                 </div>
             </div>
         </>
