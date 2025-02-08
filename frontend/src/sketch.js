@@ -15,7 +15,7 @@ const sketch = (p) => {
   };
 
   p.draw = () => {
-    p.background(0);
+    p.background(255);
     drawWaves(rows);
   };
 
@@ -61,8 +61,8 @@ const sketch = (p) => {
     p.colorMode(p.HSB);
     // Calculate the hue (0 - 360) based on the wave number, mapping
     // it to an HSB hue value
-    let hue = p.map(n, 0, rows, 200, 250);
-    p.fill(hue, 60, 50);
+    let hue = p.map(n, 0, rows, 180, 220);
+    p.fill(hue, 60, 80);
     p.noStroke();
     // We're using vertex-based drawing
     p.beginShape();
