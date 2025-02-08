@@ -163,13 +163,6 @@ app.get('/businesses', async (req, res) => {
         userZip = parseInt(apiJson.postcode, 10);
     }
 
-
-    if (apiResponse.ok) {
-        userLat = apiJson.lat;
-        userLon = apiJson.lon;
-    }
-
-
     let businesses = [];
     try {
         businesses = await db.collection("businesses").whereEqualTo("zipCode", userZip).get();
@@ -187,7 +180,7 @@ app.get('/businesses', async (req, res) => {
     });
 
     // sort businesses array
-    res.status(200).send();
+    res.status(200).send(businesses);
 })
 
 // time permitting
