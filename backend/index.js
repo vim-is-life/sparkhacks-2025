@@ -54,6 +54,11 @@ app.post('/signup/business', async (req, res) => {
         lon = apiJson.lon;
     }
 
+    // parse address to street, city, state, and zip
+    // NOTE: we must receive the address in this format, because we dont have
+    // logic to work around errors
+    const { street, city, state, zip } = address.split(",");
+
     // leave doc empty so firebase makes a uuid for business
     try {
         await db.collection("businesses").doc().set({
@@ -61,7 +66,10 @@ app.post('/signup/business', async (req, res) => {
             email: email,
             businessCategory: businessCategory,
             description: description,
-            address: address,
+            streetAddress: street,
+            city: city,
+            state: state,
+            zipCode: zipCode,
             latitude: lat,
             longitude: lon,
             pictureUrls: pictureUrls,
@@ -82,6 +90,7 @@ app.post('/signup/business', async (req, res) => {
 //     use firebase createUserWithEmailAndPassword func to handle the user's pass
 app.post('/signup/user', async (req, res) => {
     const { name, email, categories_of_interest } = req.body;
+
     try {
         console.log(`New user acc! -> ${name} who likes ${categories_of_interest}`);
         await db.collection("users").doc().set({
@@ -93,6 +102,7 @@ app.post('/signup/user', async (req, res) => {
         console.log(err);
         res.status(500).send(err);
     }
+
     res.status(200).send();
 })
 
