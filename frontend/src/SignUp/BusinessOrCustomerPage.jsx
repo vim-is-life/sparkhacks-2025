@@ -21,7 +21,7 @@ function BusinessOrCustomerPage() {
                 </Typography>
               </CardHeader>
               <CardBody className="text-center">
-                <Link to="/business/signup">
+                <Link to="/signup/business">
                   <Button fullWidth color="blue">Set Sail as Business</Button>
                 </Link>
               </CardBody>
@@ -36,7 +36,7 @@ function BusinessOrCustomerPage() {
                 </Typography>
               </CardHeader>
               <CardBody className="text-center">
-                <Link to="/customer/signup">
+                <Link to="/signup/customer">
                   <Button fullWidth color="teal">Sail as Customer</Button>
                 </Link>
               </CardBody>
