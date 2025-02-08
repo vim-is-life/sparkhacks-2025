@@ -18,3 +18,34 @@
 .map:hover{
     box-shadow: 0 0 20px grey;
 }
+
+
+.header-div{
+    background: white;
+    width:100%;
+    height: fit-content;
+    margin:0;
+    display: flex;
+
+
+}
+
+* {
+    margin:0 0;
+    padding:0;
+  }
+
+.bar-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 40px;
+    padding:20px;
+    background-color: black;
+}
+
+.bar-container img{
+    width:15em;
+    justify-content: center;
+}

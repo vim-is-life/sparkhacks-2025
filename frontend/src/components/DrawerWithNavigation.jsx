@@ -13,6 +13,7 @@ import {
 } from "@material-tailwind/react";
 import { IconButtonDefault } from "./IconButtonDefault";
 import "../index.css"
+import Logo from "../assets/Logo.png"
  
 export function DrawerWithNavigation() {
   const [open, setOpen] = React.useState(false);
@@ -20,18 +21,20 @@ export function DrawerWithNavigation() {
   const closeDrawer = () => setOpen(false);
  
   return (
+    <div className="bar-container">
     <React.Fragment>
         
 
-        <IconButton onClick={openDrawer}>
+        <IconButton style={{ backgroundColor: 'rgb(64, 121, 255)'}} onClick={openDrawer}>
             <i className="fas fa-bars" />
         </IconButton>    
 
       <Drawer open={open} onClose={closeDrawer}>
         <div className="mb-2 flex items-center justify-between p-4">
-          <Typography variant="h5" color="blue-gray">
-            Material Tailwind
-          </Typography>
+          {/* <Typography variant="h5" color="blue-gray">
+            TideTogether
+          </Typography> */}
+          <img className="w-40" src={Logo}/>
           <IconButton variant="text" color="blue-gray" onClick={closeDrawer}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -50,7 +53,7 @@ export function DrawerWithNavigation() {
           </IconButton>
         </div>
         <List>
-            <Link to="/">
+            <Link to="/" onClick={closeDrawer}>
                 <ListItem>
                     <ListItemPrefix>
                     <svg
@@ -60,15 +63,17 @@ export function DrawerWithNavigation() {
                         className="h-5 w-5"
                     >
                     <path
-                        fillRule="evenodd"
-                        d="M2.25 2.25a.75.75 0 000 1.5H3v10.5a3 3 0 003 3h1.21l-1.172 3.513a.75.75 0 001.424.474l.329-.987h8.418l.33.987a.75.75 0 001.422-.474l-1.17-3.513H18a3 3 0 003-3V3.75h.75a.75.75 0 000-1.5H2.25zm6.04 16.5l.5-1.5h6.42l.5 1.5H8.29zm7.46-12a.75.75 0 00-1.5 0v6a.75.75 0 001.5 0v-6zm-3 2.25a.75.75 0 00-1.5 0v3.75a.75.75 0 001.5 0V9zm-3 2.25a.75.75 0 00-1.5 0v1.5a.75.75 0 001.5 0v-1.5z"
-                        clipRule="evenodd"
+                        d="M11.47 3.84a.75.75 0 011.06 0l8.69 8.69a.75.75 0 101.06-1.06l-8.689-8.69a2.25 2.25 0 00-3.182 0l-8.69 8.69a.75.75 0 001.061 1.06l8.69-8.69z"
+                    />
+                    <path
+                        d="M12 5.432l8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 01-.75-.75v-4.5a.75.75 0 00-.75-.75h-3a.75.75 0 00-.75.75V21a.75.75 0 01-.75.75H5.625a1.875 1.875 0 01-1.875-1.875v-6.198a2.29 2.29 0 00.091-.086L12 5.43z"
                     />
                     </svg>
                     </ListItemPrefix>
                     Home
                 </ListItem>
             </Link>
+            <Link to="/bussinesses" onClick={closeDrawer}>
           <ListItem>
             <ListItemPrefix>
               <svg
@@ -86,31 +91,15 @@ export function DrawerWithNavigation() {
             </ListItemPrefix>
             My Business
             <ListItemSuffix>
-              <Chip
-                value="5"
+              {/* <Chip
+                value="0"
                 size="sm"
                 color="green"
                 className="rounded-full"
-              />
+              /> */}
             </ListItemSuffix>
           </ListItem>
-          <ListItem>
-            <ListItemPrefix>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-                className="h-5 w-5"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M6.912 3a3 3 0 00-2.868 2.118l-2.411 7.838a3 3 0 00-.133.882V18a3 3 0 003 3h15a3 3 0 003-3v-4.162c0-.299-.045-.596-.133-.882l-2.412-7.838A3 3 0 0017.088 3H6.912zm13.823 9.75l-2.213-7.191A1.5 1.5 0 0017.088 4.5H6.912a1.5 1.5 0 00-1.434 1.059L3.265 12.75H6.11a3 3 0 012.684 1.658l.256.513a1.5 1.5 0 001.342.829h3.218a1.5 1.5 0 001.342-.83l.256-.512a3 3 0 012.684-1.658h2.844z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            </ListItemPrefix>
-            Sales
-          </ListItem>
+          </Link>
           <ListItem>
             <ListItemPrefix>
               <svg
@@ -143,13 +132,13 @@ export function DrawerWithNavigation() {
                 />
               </svg>
             </ListItemPrefix>
-            Tables
+            Settings
           </ListItem>
         </List>
-        <Button className="mt-3 ml-5" size="sm">
-          Documentation
-        </Button>
+        
       </Drawer>
     </React.Fragment>
+    <img src={Logo}/>
+    </div>
   );
 }
