@@ -112,6 +112,7 @@ function LocationMarker() {
         if (businessesData.length > 0) {
           map.flyTo([businessesData[0].lat, businessesData[0].lng], 13);
         }
+        
       } catch (firestoreError) {
         console.error('Firestore error:', firestoreError);
       }
