@@ -29,7 +29,7 @@ function calculateDistBetweenTwoPoints(lat1, lon1, lat2, lon2) {
 
     const d = R * c; // in metres
 
-    return d
+    return d;
 }
 
 // routes (in order of importance):
@@ -69,7 +69,7 @@ app.post('/signup/business', async (req, res) => {
             streetAddress: street,
             city: city,
             state: state,
-            zipCode: zipCode,
+            zipCode: parseInt(zip, 10),
             latitude: lat,
             longitude: lon,
             pictureUrls: pictureUrls,
@@ -108,8 +108,48 @@ app.post('/signup/user', async (req, res) => {
 
 // - view all businesses, send relevant ones
 //     GET{lat, lon} businesses/
-app.post('/businesses', (req, res) => {
-    // TODO(implement)
+app.get('/businesses', async (req, res) => {
+    // take user's lat and long to get things that are in the same zip code
+    const userLat = parseFloat(req.query.lat);
+    const userLon = parseFloat(req.query.lon);
+    const url = encodeURI(`https://geocode.maps.co/reverse?lat=${userLat}&lon=${userLon}&api_key=${geocodingApiKey}`);
+    let userZip;
+    const apiResponse = await fetch(url);
+
+    if (!apiResponse.ok) {
+        console.log("[ERR] couldnt do reverse lookup with the geocoding api");
+        userZip = 60607;  // hack, change if have time
+    } else {
+        const apiJson = await apiResponse.json();
+        console.log(apiJson);
+        userZip = parseInt(apiJson.postcode, 10);
+    }
+
+
+    if (apiResponse.ok) {
+        userLat = apiJson.lat;
+        userLon = apiJson.lon;
+    }
+
+
+    let businesses = [];
+    try {
+        businesses = await db.collection("businesses").whereEqualTo("zipCode", userZip).get();
+    } catch (err) {
+        console.log(err);
+        return res.status(500).send();
+    }
+
+    // sort businesses
+    console.log(businesses);
+    businesses.sort((a, b) => {
+        const distanceA = calculateDistBetweenTwoPoints(userLat, userLon, a.latitude, a.longitude);
+        const distanceB = calculateDistBetweenTwoPoints(userLat, userLon, b.latitude, b.longitude);
+        return distanceA - distanceB;
+    });
+
+    // sort businesses array
+    res.status(200).send();
 })
 
 // time permitting
