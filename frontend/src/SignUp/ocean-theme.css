@@ -37,6 +37,13 @@
   
   .ocean-gradient {
     background: linear-gradient(180deg, #00b4d8 0%, #0077b6 100%);
+    background-size: cover;
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    overflow: hidden;
+    top: 0;
+    left: 0;
   }
   
   .floating {
