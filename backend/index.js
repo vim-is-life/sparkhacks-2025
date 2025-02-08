@@ -1,7 +1,9 @@
+// note that we use https://geocode.maps.co/ for our geocoding
 const { admin, db } = require('./firebase-admin');
 const express = require('express');
 const cors = require('cors');
 const app = express();
+const geocodingApiKey = "67a7b07bd7c04782315820cwze3a649";
 app.use(express.json());
 
 app.use(cors({
