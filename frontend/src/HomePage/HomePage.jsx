@@ -11,11 +11,6 @@ import { useEffect, useState } from 'react';
 function HomePage() {
     return (
         <>
-
-            
-            <Link to={'/signup'}>
-                <Button>Button</Button>
-            </Link>
             <div className='container'>
                 <div className="map">
                     <MyMapComponent />
