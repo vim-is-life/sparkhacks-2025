@@ -152,8 +152,7 @@ app.get('/businesses', async (req, res) => {
         business.distance = calculateDistBetweenTwoPoints(userLat, userLon, business.latitude, business.longitude);
     });
 
-    businesses.filter((b) => {b.distance <= MAX_DISTANCE_METERS})
-              .sort((a, b) => a.distance - b.distance);
+    businesses.filter((b) => {b.distance <= MAX_DISTANCE_METERS});
 
     res.status(200).send(businesses);
 })
