@@ -106,10 +106,6 @@ app.post('/signup/business/addphotos', async (req, res) => {
     res.status(200).send();
 })
 
-// - user resgistration
-//     POST{name, email, categories_of_interest}
-//     /signup/user
-//     use firebase createUserWithEmailAndPassword func to handle the user's pass
 app.post('/signup/user', async (req, res) => {
     const { name, email, categories_of_interest } = req.body;
 
