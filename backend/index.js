@@ -12,8 +12,8 @@ app.use(cors({
 }));
 
 
-// return the distance between two points on the earth where point 1 is
-// represented by `lat1` and `lon1` and point 2 by `lat2` and `lon2`.
+// return the distance (in meters) between two points on the earth where point 1
+// is represented by `lat1` and `lon1` and point 2 by `lat2` and `lon2`.
 // - reference: https://www.movable-type.co.uk/scripts/latlong.html
 function calculateDistBetweenTwoPoints(lat1, lon1, lat2, lon2) {
     const R = 6371e3; // metres
@@ -52,8 +52,8 @@ app.post('/signup/business', async (req, res) => {
         const data = await apiResponse.json();
         console.log("This is the data: ", data);
         apiJson = data[0]
-        lat = apiJson.lat;
-        lon = apiJson.lon;
+        lat = apiJson.lat ?? -1;
+        lon = apiJson.lon ?? -1;
     }
 
     // parse address to street, city, state, and zip
@@ -131,47 +131,46 @@ app.post('/signup/user', async (req, res) => {
 // - view all businesses, send relevant ones
 //     GET{lat, lon} businesses/
 app.get('/businesses', async (req, res) => {
-    // take user's lat and long to get things that are in the same zip code
-    const userLat = parseFloat(req.query.lat);
-    const userLon = parseFloat(req.query.lon);
-    const url = encodeURI(`https://geocode.maps.co/reverse?lat=${userLat}&lon=${userLon}&api_key=${geocodingApiKey}`);
-    let userZip;
-    const apiResponse = await fetch(url);
+  const MAX_DISTANCE_MILES = 5;
+  const MAX_DISTANCE_METERS = MAX_DISTANCE_MILES * 1609.34;
 
-    if (!apiResponse.ok) {
-        console.log("[ERR] couldnt do reverse lookup with the geocoding api");
-        userZip = 60607;  // hack, change if have time
-    } else {
-        const apiJson = await apiResponse.json();
-        console.log(apiJson);
-        userZip = parseInt(apiJson.postcode, 10);
-    }
+  // Parse the user's latitude and longitude from the query parameters
+  const userLat = parseFloat(req.query.lat);
+  const userLon = parseFloat(req.query.lon);
 
-    let businesses = [];
-    try {
-        businesses = await db.collection("businesses").whereEqualTo("zipCode", userZip).get();
-    } catch (err) {
-        console.log(err);
-        return res.status(500).send();
-    }
+  try {
+    // Retrieve the collection snapshot from Firestore
+    const snapshot = await db.collection("businesses").get();
+    const businesses = [];
 
-    // sort businesses
-    console.log(businesses);
-    businesses.sort((a, b) => {
-        const distanceA = calculateDistBetweenTwoPoints(userLat, userLon, a.latitude, a.longitude);
-        const distanceB = calculateDistBetweenTwoPoints(userLat, userLon, b.latitude, b.longitude);
-        return distanceA - distanceB;
+    // Loop over each document in the snapshot
+    snapshot.forEach((doc) => {
+      // Get business data from document
+      const businessData = doc.data();
+
+      // Convert stored latitude and longitude from strings to numbers
+      const businessLat = parseFloat(businessData.latitude);
+      const businessLon = parseFloat(businessData.longitude);
+
+      // Calculate distance from the user location
+      const distance = calculateDistBetweenTwoPoints(userLat, userLon, businessLat, businessLon);
+
+      // Only include businesses within the maximum allowed distance
+      if (distance <= MAX_DISTANCE_METERS) {
+        // Add an id and distance to the business data for later use
+        businesses.push({ id: doc.id, ...businessData, distance });
+      }
     });
 
-    // sort businesses array
+    // Send the filtered businesses back to the client
     res.status(200).send(businesses);
-})
+  } catch (err) {
+    console.error("Error fetching businesses:", err);
+    res.status(500).send({ error: "Error fetching businesses" });
+  }
+});
 
-// time permitting
-// - user profile page
-// - user profile page
-//     GET /accountinfo
-// - business profile page
+
 
 
 // listening port
